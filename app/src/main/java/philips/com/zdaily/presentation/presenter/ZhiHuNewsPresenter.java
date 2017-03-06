@@ -3,6 +3,7 @@ package philips.com.zdaily.presentation.presenter;
 import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
+import philips.com.zdaily.R;
 import philips.com.zdaily.data.model.NewsEntity;
 import philips.com.zdaily.domain.interactor.GetZhiHuNewsInteractor;
 import philips.com.zdaily.presentation.view.ZhiHuNewsView;
@@ -48,6 +49,7 @@ public class ZhiHuNewsPresenter implements Presenter {
 
             @Override
             public void onError(Throwable e) {
+                zhiHuNewsView.showError(R.string.network_error);
 
             }
 

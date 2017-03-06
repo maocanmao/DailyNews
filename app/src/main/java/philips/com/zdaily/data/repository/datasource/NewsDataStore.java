@@ -1,6 +1,7 @@
 package philips.com.zdaily.data.repository.datasource;
 
 import io.reactivex.Observable;
+import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.data.model.NewsEntity;
 
 /**
@@ -9,4 +10,6 @@ import philips.com.zdaily.data.model.NewsEntity;
 
 public interface NewsDataStore {
     Observable<NewsEntity> latestNews();
+
+    Observable<NewsDetail> newsDetail(String newsId);
 }

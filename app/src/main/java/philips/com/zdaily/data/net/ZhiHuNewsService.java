@@ -1,6 +1,7 @@
 package philips.com.zdaily.data.net;
 
 import io.reactivex.Observable;
+import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.data.model.NewsEntity;
 import retrofit2.http.GET;
 
@@ -11,4 +12,7 @@ import retrofit2.http.GET;
 public interface ZhiHuNewsService {
     @GET("news/latest")
     Observable<NewsEntity> getLatestNewsList();
+
+    @GET("news/{newsId}")
+    Observable<NewsDetail> getNewsDetail(String newsId);
 }

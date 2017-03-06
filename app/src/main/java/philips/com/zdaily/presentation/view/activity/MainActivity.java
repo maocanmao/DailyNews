@@ -2,6 +2,7 @@ package philips.com.zdaily.presentation.view.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,7 +31,7 @@ import philips.com.zdaily.presentation.presenter.ZhiHuNewsPresenter;
 import philips.com.zdaily.presentation.view.ZhiHuNewsView;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ZhiHuNewsView{
+        implements NavigationView.OnNavigationItemSelectedListener, ZhiHuNewsView {
 
     @Bind(R.id.newsRecyclerView)
     RecyclerView newsRecyclerView;
@@ -40,6 +41,9 @@ public class MainActivity extends BaseActivity
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
     private ZhiHulatestNewsAdapter zhiHulatestNewsAdapter;
 
@@ -64,13 +68,13 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        initView();
+        initialize();
     }
 
     @Override
-     public void initView(){
+    public void initialize() {
         newsRepository = new NewsDataRepository();
-        zhiHuNewsPresenter = new ZhiHuNewsPresenter(this,new GetZhiHuNewsInteractor(JobExecutor.getInstance(), UiThread.getInstance(),
+        zhiHuNewsPresenter = new ZhiHuNewsPresenter(this, new GetZhiHuNewsInteractor(JobExecutor.getInstance(), UiThread.getInstance(),
                 newsRepository));
         layoutManager = new LinearLayoutManager(this);
         newsRecyclerView.setLayoutManager(layoutManager);
@@ -137,7 +141,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initNewsList(List<NewsEntity.Story> newsEntityList) {
-        zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList,this);
+        zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList, this);
         newsRecyclerView.setAdapter(zhiHulatestNewsAdapter);
     }
 
@@ -165,6 +169,12 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void showError(String message) {
+
+    }
+
+    @Override
+    public void showError(int messageId) {
+        showMessageWithSnackBar(coordinatorLayout, messageId);
 
     }
 

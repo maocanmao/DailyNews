@@ -1,6 +1,7 @@
 package philips.com.zdaily.data.repository;
 
 import io.reactivex.Observable;
+import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.data.model.NewsEntity;
 import philips.com.zdaily.data.repository.datasource.CloudNewsDataStore;
 import philips.com.zdaily.data.repository.datasource.NewsDataStore;
@@ -15,5 +16,11 @@ public class NewsDataRepository implements NewsRepository{
     public Observable<NewsEntity> latestNews() {
         NewsDataStore newsDataStore = new CloudNewsDataStore();
         return newsDataStore.latestNews();
+    }
+
+    @Override
+    public Observable<NewsDetail> newsDetail(String newsId) {
+        NewsDataStore newsDataStore = new CloudNewsDataStore();
+        return  newsDataStore.newsDetail(newsId);
     }
 }

@@ -1,6 +1,7 @@
 package philips.com.zdaily.data.repository.datasource;
 
 import io.reactivex.Observable;
+import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.data.model.NewsEntity;
 import philips.com.zdaily.data.net.RestClient;
 import philips.com.zdaily.data.net.ZhiHuNewsService;
@@ -14,5 +15,10 @@ public class CloudNewsDataStore implements NewsDataStore {
     @Override
     public Observable<NewsEntity> latestNews() {
         return  RestClient.getService(ZhiHuNewsService.class).getLatestNewsList();
+    }
+
+    @Override
+    public Observable<NewsDetail> newsDetail(String newsId) {
+        return RestClient.getService(ZhiHuNewsService.class).getNewsDetail(newsId);
     }
 }

@@ -34,6 +34,8 @@ public interface LoadDataView {
      */
     void showError(String message);
 
+    void showError(int messageId);
+
     /**
      * Get a {@link android.content.Context}.
      */
