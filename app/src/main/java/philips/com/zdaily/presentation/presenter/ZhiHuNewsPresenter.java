@@ -50,13 +50,12 @@ public class ZhiHuNewsPresenter implements Presenter {
             @Override
             public void onError(Throwable e) {
                 zhiHuNewsView.showError(R.string.network_error);
-
+                hideViewLoading();
             }
 
             @Override
             public void onComplete() {
                 hideViewLoading();
-
             }
         }, null);
     }

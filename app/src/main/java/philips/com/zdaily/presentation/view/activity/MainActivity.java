@@ -1,6 +1,7 @@
 package philips.com.zdaily.presentation.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -17,17 +18,21 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import philips.com.zdaily.BaseApplication;
 import philips.com.zdaily.R;
 import philips.com.zdaily.data.executor.JobExecutor;
 import philips.com.zdaily.data.model.NewsEntity;
-import philips.com.zdaily.data.repository.NewsDataRepository;
 import philips.com.zdaily.domain.interactor.GetZhiHuNewsInteractor;
 import philips.com.zdaily.domain.repository.NewsRepository;
 import philips.com.zdaily.presentation.UiThread;
 import philips.com.zdaily.presentation.adapter.ZhiHulatestNewsAdapter;
 import philips.com.zdaily.presentation.presenter.ZhiHuNewsPresenter;
+import philips.com.zdaily.presentation.view.ActivityNameConstants;
+import philips.com.zdaily.presentation.view.Constants;
 import philips.com.zdaily.presentation.view.ZhiHuNewsView;
 
 public class MainActivity extends BaseActivity
@@ -45,11 +50,18 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
+    @Inject
+    JobExecutor jobExecutor;
+
+    @Inject
+    UiThread uiThread;
+    @Inject
+    NewsRepository newsRepository;
+
     private ZhiHulatestNewsAdapter zhiHulatestNewsAdapter;
 
     private ZhiHuNewsPresenter zhiHuNewsPresenter;
 
-    private NewsRepository newsRepository;
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -58,6 +70,7 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        BaseApplication.getComponent(this).inject(this);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -73,8 +86,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initialize() {
-        newsRepository = new NewsDataRepository();
-        zhiHuNewsPresenter = new ZhiHuNewsPresenter(this, new GetZhiHuNewsInteractor(JobExecutor.getInstance(), UiThread.getInstance(),
+        zhiHuNewsPresenter = new ZhiHuNewsPresenter(this, new GetZhiHuNewsInteractor(jobExecutor, uiThread,
                 newsRepository));
         layoutManager = new LinearLayoutManager(this);
         newsRecyclerView.setLayoutManager(layoutManager);
@@ -141,7 +153,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initNewsList(List<NewsEntity.Story> newsEntityList) {
-        zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList, this);
+        zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList, this, news -> {
+            Intent intent = new Intent();
+            intent.putExtra(Constants.NEWS_ID,news.getId());
+            navigatorTo(ActivityNameConstants.DetailActivityName,intent);
+        });
         newsRecyclerView.setAdapter(zhiHulatestNewsAdapter);
     }
 

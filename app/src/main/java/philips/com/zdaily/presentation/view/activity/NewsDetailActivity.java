@@ -1,7 +1,10 @@
 package philips.com.zdaily.presentation.view.activity;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,55 +13,83 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import philips.com.zdaily.BaseApplication;
 import philips.com.zdaily.R;
 import philips.com.zdaily.data.executor.JobExecutor;
 import philips.com.zdaily.data.model.NewsDetail;
-import philips.com.zdaily.data.repository.NewsDataRepository;
 import philips.com.zdaily.domain.interactor.GetNewsDetailsInteractor;
 import philips.com.zdaily.domain.repository.NewsRepository;
 import philips.com.zdaily.presentation.UiThread;
 import philips.com.zdaily.presentation.presenter.NewsDetailPresenter;
+import philips.com.zdaily.presentation.view.Constants;
 import philips.com.zdaily.presentation.view.NewsDetailView;
 
-public class NewsDetailActivity extends BaseActivity implements NewsDetailView{
+public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
     @Bind(R.id.title)
     TextView title;
+
     @Bind(R.id.image)
     ImageView image;
+
     @Bind(R.id.content)
     TextView content;
 
-    NewsDetailPresenter newsDetailPresenter;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
-    private NewsRepository newsRepository;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @Inject
+    JobExecutor jobExecutor;
+
+    @Inject
+    UiThread uiThread;
+
+    NewsDetailPresenter newsDetailPresenter;
+    @Inject
+    NewsRepository newsRepository;
 
     private String newsId;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
+        ButterKnife.bind(this);
+        BaseApplication.getComponent(this).inject(this);
+        setSupportActionBar(toolbar);
+        initialize();
     }
 
     @Override
     public void initialize() {
-        newsRepository = new NewsDataRepository();
-        newsDetailPresenter = new NewsDetailPresenter(this, new GetNewsDetailsInteractor(JobExecutor.getInstance(),
-                UiThread.getInstance(),newsRepository));
+        newsDetailPresenter = new NewsDetailPresenter(this, new GetNewsDetailsInteractor(jobExecutor,
+                uiThread, newsRepository));
+        this.newsId = getIntent().getStringExtra(Constants.NEWS_ID);
         newsDetailPresenter.loadNewsDetail(newsId);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
 
     @Override
-    public void loadNewsDetail(NewsDetail newsDetail) {
+    public void onLoadedNewsDetail(NewsDetail newsDetail) {
+        collapsingToolbarLayout.setTitle(newsDetail.getTitle());
         title.setText(newsDetail.getTitle());
         Picasso.with(this).load(newsDetail.getImage()).into(image);
         content.setText(Html.fromHtml(newsDetail.getBody()));
+
     }
 
     @Override
@@ -96,4 +127,5 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView{
     public Context context() {
         return null;
     }
+
 }

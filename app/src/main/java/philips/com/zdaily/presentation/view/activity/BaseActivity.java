@@ -1,5 +1,6 @@
 package philips.com.zdaily.presentation.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
@@ -18,8 +19,27 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void initialize();
 
-    public void showMessageWithSnackBar(View view, int stringResId){
-        Snackbar snackbar = Snackbar.make(view,stringResId,Snackbar.LENGTH_LONG);
+    public void showMessageWithSnackBar(View view, int stringResId) {
+        Snackbar snackbar = Snackbar.make(view, stringResId, Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+    public void navigatorTo(final String activityName, final Intent intent) {
+        Class<?> clazz;
+        try {
+            clazz = Class.forName(activityName);
+            if (clazz != null) {
+                intent.setClass(this, clazz);
+                this.startActivity(intent);
+            }
+        } catch (ClassNotFoundException ignore) {
+            return;
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

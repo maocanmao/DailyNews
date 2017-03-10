@@ -11,7 +11,7 @@ import philips.com.zdaily.domain.executor.PostExecutionThread;
 public class UiThread implements PostExecutionThread{
     static UiThread uiThread ;
 
-    private UiThread() {
+    public UiThread() {
     }
 
     @Override

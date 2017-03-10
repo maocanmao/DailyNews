@@ -23,10 +23,12 @@ public class ZhiHulatestNewsAdapter extends RecyclerView.Adapter<ZhiHulatestNews
 
     private List<NewsEntity.Story> newsEntities;
     private Context context;
+    private OnItemClickListener clickListener;
 
-    public ZhiHulatestNewsAdapter(List<NewsEntity.Story> newsEntities, Context context) {
+    public ZhiHulatestNewsAdapter(List<NewsEntity.Story> newsEntities, Context context, OnItemClickListener clickListener) {
         this.newsEntities = newsEntities;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -38,8 +40,8 @@ public class ZhiHulatestNewsAdapter extends RecyclerView.Adapter<ZhiHulatestNews
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsEntity.Story news  = newsEntities.get(position);
-        holder.title.setText(news.getTitle());
-        Picasso.with(context).load(news.getImages().get(0)).into(holder.image);
+        holder.bind(news,clickListener);
+
     }
 
     @Override
@@ -48,14 +50,25 @@ public class ZhiHulatestNewsAdapter extends RecyclerView.Adapter<ZhiHulatestNews
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
+        public ImageView imageView;
         public TextView title;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image = (ImageView) itemView.findViewById(R.id.image);
+            imageView = (ImageView) itemView.findViewById(R.id.image);
             title = (TextView) itemView.findViewById(R.id.title);
         }
+
+        public void bind(final NewsEntity.Story news, final OnItemClickListener listener){
+            title.setText(news.getTitle());
+            Picasso.with(itemView.getContext()).load(news.getImages().get(0)).into(imageView);
+            itemView.setOnClickListener(view -> listener.onClicked(news));
+
+        }
+    }
+
+    public interface OnItemClickListener{
+        void onClicked(NewsEntity.Story news);
     }
 
 }

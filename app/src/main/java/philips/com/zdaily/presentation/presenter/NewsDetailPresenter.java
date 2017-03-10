@@ -29,13 +29,14 @@ public class NewsDetailPresenter implements Presenter {
         getNewsDetailsInteractor.execute(new DisposableObserver<NewsDetail>() {
             @Override
             public void onNext(NewsDetail value) {
-                newsDetailView.loadNewsDetail(value);
+                newsDetailView.onLoadedNewsDetail(value);
             }
 
             @Override
             public void onError(Throwable e) {
                 hideViewLoading();
                 newsDetailView.showError(R.string.network_error);
+                hideViewLoading();
             }
 
             @Override

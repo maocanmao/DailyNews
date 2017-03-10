@@ -7,5 +7,5 @@ import philips.com.zdaily.data.model.NewsDetail;
  */
 
 public interface NewsDetailView extends LoadDataView{
-    void loadNewsDetail(NewsDetail newsDetail);
+    void onLoadedNewsDetail(NewsDetail newsDetail);
 }

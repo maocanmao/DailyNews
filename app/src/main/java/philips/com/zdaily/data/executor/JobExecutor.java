@@ -11,7 +11,6 @@ import philips.com.zdaily.domain.executor.ThreadExecutor;
  * Created by 310199928 on 2017/2/17.
  */
 
-
 public class JobExecutor implements ThreadExecutor {
     private ThreadPoolExecutor threadPoolExecutor;
 
@@ -23,7 +22,7 @@ public class JobExecutor implements ThreadExecutor {
     private static final TimeUnit                TIME_UNIT       = TimeUnit.SECONDS;
     private static final BlockingQueue<Runnable> WORK_QUEUE      = new LinkedBlockingQueue<Runnable>();
 
-    private JobExecutor() {
+    public JobExecutor() {
         this.threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TIME_UNIT,
                 WORK_QUEUE);
     }
