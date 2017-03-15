@@ -5,13 +5,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.zzhoujay.richtext.RichText;
 
 import javax.inject.Inject;
 
@@ -19,11 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import philips.com.zdaily.BaseApplication;
 import philips.com.zdaily.R;
-import philips.com.zdaily.data.executor.JobExecutor;
 import philips.com.zdaily.data.model.NewsDetail;
-import philips.com.zdaily.domain.interactor.GetNewsDetailsInteractor;
-import philips.com.zdaily.domain.repository.NewsRepository;
-import philips.com.zdaily.presentation.UiThread;
 import philips.com.zdaily.presentation.presenter.NewsDetailPresenter;
 import philips.com.zdaily.presentation.view.Constants;
 import philips.com.zdaily.presentation.view.NewsDetailView;
@@ -48,14 +44,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Inject
-    JobExecutor jobExecutor;
-
-    @Inject
-    UiThread uiThread;
-
     NewsDetailPresenter newsDetailPresenter;
-    @Inject
-    NewsRepository newsRepository;
 
     private String newsId;
 
@@ -71,8 +60,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     public void initialize() {
-        newsDetailPresenter = new NewsDetailPresenter(this, new GetNewsDetailsInteractor(jobExecutor,
-                uiThread, newsRepository));
+        newsDetailPresenter.setView(this);
         this.newsId = getIntent().getStringExtra(Constants.NEWS_ID);
         newsDetailPresenter.loadNewsDetail(newsId);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
@@ -88,7 +76,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
         collapsingToolbarLayout.setTitle(newsDetail.getTitle());
         title.setText(newsDetail.getTitle());
         Picasso.with(this).load(newsDetail.getImage()).into(image);
-        content.setText(Html.fromHtml(newsDetail.getBody()));
+        RichText.from(newsDetail.getBody()).into(content);
 
     }
 

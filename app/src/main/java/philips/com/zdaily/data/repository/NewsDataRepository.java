@@ -1,5 +1,7 @@
 package philips.com.zdaily.data.repository;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.data.model.NewsEntity;
@@ -12,6 +14,11 @@ import philips.com.zdaily.domain.repository.NewsRepository;
  */
 
 public class NewsDataRepository implements NewsRepository{
+
+    @Inject
+    NewsDataRepository() {
+    }
+
     @Override
     public Observable<NewsEntity> latestNews() {
         NewsDataStore newsDataStore = new CloudNewsDataStore();

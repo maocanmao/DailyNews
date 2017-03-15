@@ -1,5 +1,7 @@
 package philips.com.zdaily.domain.interactor;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import philips.com.zdaily.data.model.NewsDetail;
 import philips.com.zdaily.domain.executor.PostExecutionThread;
@@ -14,6 +16,7 @@ public class GetNewsDetailsInteractor extends Interactor<NewsDetail, String> {
 
     private NewsRepository newsRepository;
 
+    @Inject
     public GetNewsDetailsInteractor(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread,
                                     NewsRepository newsRepository) {
         super(threadExecutor, postExecutionThread);

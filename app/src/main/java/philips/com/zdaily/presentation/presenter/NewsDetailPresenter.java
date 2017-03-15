@@ -1,5 +1,8 @@
 package philips.com.zdaily.presentation.presenter;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.observers.DisposableObserver;
 import philips.com.zdaily.R;
 import philips.com.zdaily.data.model.NewsDetail;
@@ -10,14 +13,19 @@ import philips.com.zdaily.presentation.view.NewsDetailView;
  * Created by Zhou Yang on 2017/3/6.
  */
 
+@Singleton
 public class NewsDetailPresenter implements Presenter {
     private NewsDetailView newsDetailView;
 
     private GetNewsDetailsInteractor getNewsDetailsInteractor;
 
-    public NewsDetailPresenter(NewsDetailView newsDetailView, GetNewsDetailsInteractor getNewsDetailsInteractor) {
-        this.newsDetailView = newsDetailView;
+    @Inject
+    public NewsDetailPresenter(GetNewsDetailsInteractor getNewsDetailsInteractor) {
         this.getNewsDetailsInteractor = getNewsDetailsInteractor;
+    }
+
+    public void setView(NewsDetailView view){
+        this.newsDetailView = view;
     }
 
     public void loadNewsDetail(String newsId){

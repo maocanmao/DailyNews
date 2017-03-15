@@ -1,6 +1,11 @@
 package philips.com.zdaily.presentation.presenter;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.observers.DisposableObserver;
 import philips.com.zdaily.R;
@@ -11,13 +16,13 @@ import philips.com.zdaily.presentation.view.ZhiHuNewsView;
 /**
  * Created by Zhou Yang on 2017/2/17.
  */
-
+@Singleton
 public class ZhiHuNewsPresenter implements Presenter {
     private ZhiHuNewsView zhiHuNewsView;
     private GetZhiHuNewsInteractor getZhiHuNewsInteractor;
 
-    public ZhiHuNewsPresenter(ZhiHuNewsView zhiHuNewsView,GetZhiHuNewsInteractor getZhiHuNewsInteractor) {
-        this.zhiHuNewsView = zhiHuNewsView;
+    @Inject
+    public ZhiHuNewsPresenter(GetZhiHuNewsInteractor getZhiHuNewsInteractor) {
         this.getZhiHuNewsInteractor = getZhiHuNewsInteractor;
     }
 
@@ -28,7 +33,10 @@ public class ZhiHuNewsPresenter implements Presenter {
     private void loadNewsList() {
         showViewLoading();
         getNewsList();
+    }
 
+    public void setView(@NonNull ZhiHuNewsView view){
+        this.zhiHuNewsView = view;
     }
 
     private void showViewLoading() {

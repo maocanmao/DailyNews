@@ -7,11 +7,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import philips.com.zdaily.presentation.di.components.HasComponent;
+
 /**
  * Created by Zhou Yang on 2017/2/23.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -42,4 +45,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    protected <T> T getComponent(Class<T> componentType){
+        return componentType.cast(((HasComponent<T>) this).getComponent());
+
+    }
+
 }

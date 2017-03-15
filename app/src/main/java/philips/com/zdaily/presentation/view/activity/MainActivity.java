@@ -24,11 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import philips.com.zdaily.BaseApplication;
 import philips.com.zdaily.R;
-import philips.com.zdaily.data.executor.JobExecutor;
 import philips.com.zdaily.data.model.NewsEntity;
-import philips.com.zdaily.domain.interactor.GetZhiHuNewsInteractor;
-import philips.com.zdaily.domain.repository.NewsRepository;
-import philips.com.zdaily.presentation.UiThread;
 import philips.com.zdaily.presentation.adapter.ZhiHulatestNewsAdapter;
 import philips.com.zdaily.presentation.presenter.ZhiHuNewsPresenter;
 import philips.com.zdaily.presentation.view.ActivityNameConstants;
@@ -51,19 +47,12 @@ public class MainActivity extends BaseActivity
     CoordinatorLayout coordinatorLayout;
 
     @Inject
-    JobExecutor jobExecutor;
-
-    @Inject
-    UiThread uiThread;
-    @Inject
-    NewsRepository newsRepository;
+    ZhiHuNewsPresenter zhiHuNewsPresenter;
 
     private ZhiHulatestNewsAdapter zhiHulatestNewsAdapter;
 
-    private ZhiHuNewsPresenter zhiHuNewsPresenter;
-
-
     private RecyclerView.LayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +75,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initialize() {
-        zhiHuNewsPresenter = new ZhiHuNewsPresenter(this, new GetZhiHuNewsInteractor(jobExecutor, uiThread,
-                newsRepository));
+        zhiHuNewsPresenter.setView(this);
         layoutManager = new LinearLayoutManager(this);
         newsRecyclerView.setLayoutManager(layoutManager);
         zhiHuNewsPresenter.initialize();
@@ -198,5 +186,4 @@ public class MainActivity extends BaseActivity
     public Context context() {
         return getApplicationContext();
     }
-
 }

@@ -1,4 +1,4 @@
-package philips.com.zdaily.common.di;
+package philips.com.zdaily.presentation.di.modules;
 
 import javax.inject.Singleton;
 
@@ -15,7 +15,7 @@ import philips.com.zdaily.domain.repository.NewsRepository;
 public class RepositoryModule {
     @Provides
     @Singleton
-    public NewsRepository provideNewsDataRepository(){
-        return new NewsDataRepository();
+    public NewsRepository provideNewsDataRepository(NewsDataRepository repository){
+        return repository;
     }
 }
