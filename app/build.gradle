@@ -53,6 +53,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile "com.android.support:support-v4:21.x.x"
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:design:24.2.1'
@@ -72,5 +73,8 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
     provided "org.projectlombok:lombok:1.16.14"
     compile 'com.zzhoujay.richtext:richtext:2.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
     testCompile 'junit:junit:4.12'
 }

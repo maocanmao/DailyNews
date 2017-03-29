@@ -11,4 +11,6 @@ import philips.com.zdaily.data.model.NewsEntity;
 public interface ZhiHuNewsView extends LoadDataView{
 
     void initNewsList(List<NewsEntity.Story> newsEntity);
+    void initSlidingImage(List<NewsEntity.TopStory> topStories);
+    void onRefreshSuccess();
 }

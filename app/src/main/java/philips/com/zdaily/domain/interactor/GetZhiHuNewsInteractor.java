@@ -1,7 +1,5 @@
 package philips.com.zdaily.domain.interactor;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
@@ -14,7 +12,7 @@ import philips.com.zdaily.domain.repository.NewsRepository;
  * Created by Zhou Yang on 2017/2/20.
  */
 
-public class GetZhiHuNewsInteractor extends Interactor<List<NewsEntity.Story>, Void> {
+public class GetZhiHuNewsInteractor extends Interactor<NewsEntity, Void> {
 
     private NewsRepository newsRepository;
 
@@ -27,7 +25,7 @@ public class GetZhiHuNewsInteractor extends Interactor<List<NewsEntity.Story>, V
     }
 
     @Override
-    Observable<List<NewsEntity.Story>> buildInteractorObservable(Void aVoid) {
-        return newsRepository.latestNews().map(newsEntity -> newsEntity.getStories());// = NewsEntity::getStories()
+    Observable<NewsEntity> buildInteractorObservable(Void aVoid) {
+        return newsRepository.latestNews().map(newsEntity -> newsEntity);// = NewsEntity::getStories()
     }
 }

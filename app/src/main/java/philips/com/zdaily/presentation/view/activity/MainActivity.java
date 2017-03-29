@@ -2,11 +2,13 @@ package philips.com.zdaily.presentation.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import java.util.List;
 
@@ -46,12 +51,20 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
 
+    @Bind(R.id.slider)
+    SliderLayout sliderLayout;
+
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Inject
     ZhiHuNewsPresenter zhiHuNewsPresenter;
 
     private ZhiHulatestNewsAdapter zhiHulatestNewsAdapter;
 
     private RecyclerView.LayoutManager layoutManager;
+
+    private boolean isRefreshing;
 
 
     @Override
@@ -79,6 +92,7 @@ public class MainActivity extends BaseActivity
         layoutManager = new LinearLayoutManager(this);
         newsRecyclerView.setLayoutManager(layoutManager);
         zhiHuNewsPresenter.initialize();
+        configSwipeLayout();
     }
 
 
@@ -143,10 +157,26 @@ public class MainActivity extends BaseActivity
     public void initNewsList(List<NewsEntity.Story> newsEntityList) {
         zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList, this, news -> {
             Intent intent = new Intent();
-            intent.putExtra(Constants.NEWS_ID,news.getId());
-            navigatorTo(ActivityNameConstants.DetailActivityName,intent);
+            intent.putExtra(Constants.NEWS_ID, news.getId());
+            navigatorTo(ActivityNameConstants.DetailActivityName, intent);
         });
         newsRecyclerView.setAdapter(zhiHulatestNewsAdapter);
+    }
+
+    @Override
+    public void initSlidingImage(List<NewsEntity.TopStory> topStories) {
+        for (NewsEntity.TopStory topStory : topStories) {
+            TextSliderView textSliderView = new TextSliderView(this);
+            textSliderView.description(topStory.getTitle())
+                    .image(topStory.getImage());
+            sliderLayout.addSlider(textSliderView);
+        }
+
+    }
+
+    @Override
+    public void onRefreshSuccess() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -179,11 +209,19 @@ public class MainActivity extends BaseActivity
     @Override
     public void showError(int messageId) {
         showMessageWithSnackBar(coordinatorLayout, messageId);
-
     }
 
     @Override
     public Context context() {
         return getApplicationContext();
+    }
+
+    void configSwipeLayout() {
+        swipeRefreshLayout.setDistanceToTriggerSync(300);
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,
+                Color.GREEN,
+                Color.YELLOW,
+                Color.RED);
+        swipeRefreshLayout.setOnRefreshListener(() -> zhiHuNewsPresenter.refreshNewsList());
     }
 }

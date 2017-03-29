@@ -2,8 +2,6 @@ package philips.com.zdaily.presentation.presenter;
 
 import android.support.annotation.NonNull;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -48,10 +46,11 @@ public class ZhiHuNewsPresenter implements Presenter {
     }
 
     private void getNewsList() {
-        getZhiHuNewsInteractor.execute(new DisposableObserver<List<NewsEntity.Story>>() {
+        getZhiHuNewsInteractor.execute(new DisposableObserver<NewsEntity>() {
             @Override
-            public void onNext(List<NewsEntity.Story> value) {
-                zhiHuNewsView.initNewsList(value);
+            public void onNext(NewsEntity value) {
+                zhiHuNewsView.initNewsList(value.getStories());
+                zhiHuNewsView.initSlidingImage(value.getTop_stories());
 
             }
 
@@ -67,6 +66,27 @@ public class ZhiHuNewsPresenter implements Presenter {
             }
         }, null);
     }
+
+    public void refreshNewsList() {
+        getZhiHuNewsInteractor.execute(new DisposableObserver<NewsEntity>() {
+            @Override
+            public void onNext(NewsEntity value) {
+                zhiHuNewsView.initNewsList(value.getStories());
+                zhiHuNewsView.initSlidingImage(value.getTop_stories());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                zhiHuNewsView.showError(R.string.network_error);
+            }
+
+            @Override
+            public void onComplete() {
+                zhiHuNewsView.onRefreshSuccess();
+            }
+        }, null);
+    }
+
 
 
     @Override
