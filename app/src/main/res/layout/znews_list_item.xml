@@ -13,6 +13,7 @@
         android:layout_marginRight="7dp"
         android:layout_marginTop="7dp"
         android:elevation="@dimen/cardview_default_elevation"
+        app:cardBackgroundColor="?attr/container_background_color"
         app:cardCornerRadius="@dimen/news_list_item_card_corner_radius">
 
         <LinearLayout
@@ -33,6 +34,7 @@
                 android:layout_gravity="center"
                 android:paddingLeft="20dp"
                 android:textSize="@dimen/news_list_item_text_size"
+                android:textColor="?attr/text_color"
                 tools:text="Is it a pig"/>
 
         </LinearLayout>

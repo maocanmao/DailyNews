@@ -6,4 +6,5 @@ package philips.com.zdaily.presentation.view;
 
 public class ActivityNameConstants {
     public static String DetailActivityName = "philips.com.zdaily.presentation.view.activity.NewsDetailActivity";
+    public static String SettingActivityName = "philips.com.zdaily.presentation.view.activity.SettingActivity";
 }

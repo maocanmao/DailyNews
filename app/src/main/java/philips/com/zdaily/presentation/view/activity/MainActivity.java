@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import philips.com.zdaily.BaseApplication;
 import philips.com.zdaily.R;
 import philips.com.zdaily.data.model.NewsEntity;
-import philips.com.zdaily.presentation.adapter.ZhiHulatestNewsAdapter;
+import philips.com.zdaily.presentation.adapter.ZhiHuLatestNewsAdapter;
 import philips.com.zdaily.presentation.presenter.ZhiHuNewsPresenter;
 import philips.com.zdaily.presentation.view.ActivityNameConstants;
 import philips.com.zdaily.presentation.view.Constants;
@@ -60,11 +60,9 @@ public class MainActivity extends BaseActivity
     @Inject
     ZhiHuNewsPresenter zhiHuNewsPresenter;
 
-    private ZhiHulatestNewsAdapter zhiHulatestNewsAdapter;
+    private ZhiHuLatestNewsAdapter zhiHuLatestNewsAdapter;
 
     private RecyclerView.LayoutManager layoutManager;
-
-    private boolean isRefreshing;
 
 
     @Override
@@ -122,6 +120,8 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+//            navigatorTo(ActivityNameConstants.SettingActivityName,new Intent());
+            startActivity(new Intent(this,SettingActivity.class));
             return true;
         }
 
@@ -155,12 +155,12 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initNewsList(List<NewsEntity.Story> newsEntityList) {
-        zhiHulatestNewsAdapter = new ZhiHulatestNewsAdapter(newsEntityList, this, news -> {
+        zhiHuLatestNewsAdapter = new ZhiHuLatestNewsAdapter(newsEntityList, this, news -> {
             Intent intent = new Intent();
             intent.putExtra(Constants.NEWS_ID, news.getId());
             navigatorTo(ActivityNameConstants.DetailActivityName, intent);
         });
-        newsRecyclerView.setAdapter(zhiHulatestNewsAdapter);
+        newsRecyclerView.setAdapter(zhiHuLatestNewsAdapter);
     }
 
     @Override
@@ -216,12 +216,15 @@ public class MainActivity extends BaseActivity
         return getApplicationContext();
     }
 
-    void configSwipeLayout() {
-        swipeRefreshLayout.setDistanceToTriggerSync(300);
+    private void configSwipeLayout() {
+        swipeRefreshLayout.setDistanceToTriggerSync(400);
+        swipeRefreshLayout.setProgressViewOffset(false,80,250);
         swipeRefreshLayout.setColorSchemeColors(Color.BLUE,
                 Color.GREEN,
                 Color.YELLOW,
                 Color.RED);
         swipeRefreshLayout.setOnRefreshListener(() -> zhiHuNewsPresenter.refreshNewsList());
     }
+
+
 }

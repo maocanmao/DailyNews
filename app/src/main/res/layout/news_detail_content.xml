@@ -11,6 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_news_detail"
+    android:background="?attr/container_background_color"
     >
 
     <ProgressBar
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/news_detail_title_size"
+            android:textColor="?attr/text_color"
             tools:text="大悟，龙吃什么...."/>
 
         <TextView
@@ -39,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="?attr/text_color"
             />
     </LinearLayout>
 

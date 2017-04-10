@@ -19,20 +19,20 @@ import philips.com.zdaily.data.model.NewsEntity;
  * Created by Zhou Yang on 2017/2/21.
  */
 
-public class ZhiHulatestNewsAdapter extends RecyclerView.Adapter<ZhiHulatestNewsAdapter.ViewHolder> {
+public class ZhiHuLatestNewsAdapter extends RecyclerView.Adapter<ZhiHuLatestNewsAdapter.ViewHolder> {
 
     private List<NewsEntity.Story> newsEntities;
     private Context context;
     private OnItemClickListener clickListener;
 
-    public ZhiHulatestNewsAdapter(List<NewsEntity.Story> newsEntities, Context context, OnItemClickListener clickListener) {
+    public ZhiHuLatestNewsAdapter(List<NewsEntity.Story> newsEntities, Context context, OnItemClickListener clickListener) {
         this.newsEntities = newsEntities;
         this.context = context;
         this.clickListener = clickListener;
     }
 
     @Override
-    public ZhiHulatestNewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ZhiHuLatestNewsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.znews_list_item, parent, false);
         return new ViewHolder(v);
     }
